@@ -45,7 +45,7 @@ VS Code Dev Container:
 
 ```bash
 uv tool install cookiecutter   # or: pipx install cookiecutter
-cookiecutter /path/to/ai-circus-template
+cookiecutter https://github.com/angelmtenor/ai-circus-template
 ```
 
 You'll be prompted for `project_name`, `author_name`, `author_email`, `license`, `python_version`,
@@ -62,6 +62,9 @@ make setup
 make check
 make run
 ```
+
+Later, `make all` runs a full end-to-end verification (clean, setup, check, run) — useful to
+confirm the whole project still works after changes.
 
 ## Customizing
 
