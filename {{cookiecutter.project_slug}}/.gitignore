@@ -5,6 +5,9 @@
 backups/
 .cache/
 
+# Personal AI-agent overrides (project-level .claude/settings.json IS tracked)
+.claude/settings.local.json
+
 # macOS
 .DS_Store
 .DS_Store?

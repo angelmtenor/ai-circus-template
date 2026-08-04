@@ -97,6 +97,27 @@ e.g. `uv run {{cookiecutter.project_slug}}-hello-world`.
 
 ## Contributing
 
+- Please refer to [AGENTS.md](AGENTS.md) for strict architectural and testing guidelines (applies
+  to human and AI-assisted contributions alike).
+- Review the [Style Guide](styleguide.md) for commit message conventions.
 - Review the [Contributing Guidelines](CONTRIBUTING.md) for the workflow and submission process.
 - Please follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 - See [SECURITY.md](SECURITY.md) before deploying to production.
+
+---
+
+## AI Coding Agents
+
+This project ships agent-agnostic instructions centered on [AGENTS.md](AGENTS.md) (security
+rules, human-in-the-loop protocol, verification requirements) and [SKILLS.md](SKILLS.md)
+(architecture and coding standards). Tool-specific entry points just point back to these two
+files:
+
+| Tool | Entry point |
+|---|---|
+| Claude Code | [CLAUDE.md](CLAUDE.md) |
+| Gemini CLI | [GEMINI.md](GEMINI.md) |
+| GitHub Copilot | [.github/copilot-instructions.md](.github/copilot-instructions.md) |
+
+`.copilotignore` and `.geminiignore` additionally instruct those tools to never read `.env`,
+`*.pem`, `*.key`, or `**/secrets*`/`**/credentials*` files.

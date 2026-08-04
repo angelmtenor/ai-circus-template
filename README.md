@@ -19,9 +19,11 @@ packages and tooling removed.
   Actions CI workflow mirroring `make check`.
 - Repo scaffolding: `LICENSE` (MIT/Apache-2.0/Proprietary), `CONTRIBUTING.md`,
   `CODE_OF_CONDUCT.md`, `SECURITY.md`, PR template.
+- **Agent-agnostic AI instructions**: `AGENTS.md` (security rules, human-in-the-loop protocol,
+  verification requirements) and `SKILLS.md` (architecture/coding standards) are the source of
+  truth; `CLAUDE.md`, `GEMINI.md`, and `.github/copilot-instructions.md` are thin pointers back to
+  them, plus `.copilotignore`/`.geminiignore` to keep secrets out of agent context.
 
-No GenAI/LLM packages (langchain, openai, etc.) are included — this is a general-purpose backend
-Python scaffold.
 
 ## Usage
 
