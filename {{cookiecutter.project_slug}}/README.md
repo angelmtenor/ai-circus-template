@@ -82,20 +82,26 @@ The project uses a single source of truth for settings defined in `settings.yaml
 
 | Command | Description |
 |---|---|
-| `make clean` | Remove `.venv`, caches, and artifacts (with `.env` backup) |
+| `make help` | Show all targets with their descriptions |
 | `make setup` | Full environment initialization and verification |
+| `make install` | Sync deps and install pre-commit hooks (run after cloning) |
 | `make check` | Run `qa` (linting) and `test` (unit tests) |
-| `make run` | Execute the main application |
-| `make qa` | Run pre-commit hooks (ruff, pyrefly, config drift check, etc.) |
-| `make test` | Run the pytest suite |
-| `make all` | Full end-to-end verification pipeline |
 | `make update` | Upgrade lockfile, sync deps, update pre-commit hooks |
 | `make generate-data-model` | Regenerate `data_model.py`/`.env.example` from `settings.yaml` |
+| `make ssl-check` | Detect and configure SSL CA bundle (for networks with SSL inspection) |
+| `make qa` | Run pre-commit hooks (ruff, pyrefly, config drift check, etc.) |
+| `make test` | Run the pytest suite |
+| `make unused-packages` | Detect unused packages (deptry) |
+| `make all` | Full end-to-end verification pipeline: clean, setup, check, run |
+| `make build` | Build the distributable package |
+| `make build-container` | Build the Docker image (uses layer cache) |
+| `make build-container-clean` | Force a full rebuild of the Docker image (no cache) |
+| `make run-container` | Build (cached) and run the Docker container |
+| `make clean` | Remove `.venv`, caches, and artifacts (with `.env` backup) |
+| `make zip` | Zip git-tracked files into `project.zip` |
+| `make run` | Execute the main application |
 | `make hello-world` | Run the hello-world demonstration tool |
 | `make check-service` | Check connectivity to the example external service |
-| `make build` | Build the distributable package |
-| `make build-container` | Build the Docker image |
-| `make run-container` | Build and run the Docker container |
 
 Each tool target is a thin wrapper around a `uv run` console script — they're declared under
 `[project.scripts]` in [pyproject.toml](pyproject.toml) and can be run directly without `make`,
