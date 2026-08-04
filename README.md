@@ -1,7 +1,8 @@
 # ai-circus-template
 
-A [cookiecutter](https://cookiecutter.readthedocs.io/) template for scaffolding backend/packaging
-Python projects. Distilled from [ai-circus](https://github.com/angelmtenor/ai-circus)'s core
+A [cookiecutter](https://cookiecutter.readthedocs.io/) template for scaffolding general-purpose
+Python projects — packaging, backend services, CLIs, libraries, anything that isn't GenAI/LLM
+specific. Distilled from [ai-circus](https://github.com/angelmtenor/ai-circus)'s core
 infrastructure (logging, system info, validated environment configuration) with all GenAI/LLM
 packages and tooling removed.
 
