@@ -1,8 +1,8 @@
-# Dev Container: Python development (Ubuntu 24.04)
+# Dev Container: Python development (Ubuntu 26.04)
 # Author: {{cookiecutter.author_name}}. Scaffolded from ai-circus-template.
 # Description: Builds a development container with Git, uv, and essential build tools.
 
-FROM ubuntu:24.04
+FROM ubuntu:26.04
 
 LABEL maintainer="{{cookiecutter.author_name}} <{{cookiecutter.author_email}}>" \
     description="Python dev container with Git and uv"
