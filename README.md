@@ -1,0 +1,58 @@
+# ai-circus-template
+
+A [cookiecutter](https://cookiecutter.readthedocs.io/) template for scaffolding backend/packaging
+Python projects. Distilled from [ai-circus](https://github.com/angelmtenor/ai-circus)'s core
+infrastructure (logging, system info, validated environment configuration) with all GenAI/LLM
+packages and tooling removed.
+
+## What you get
+
+- **`core/`** — Loguru-based logging (`core/logger.py`), system/environment info utilities
+  (`core/info.py`), and a settings-model generator (`core/config_generator.py`) that turns a
+  declarative `settings.yaml` into a validated `pydantic-settings` model (`data_model.py`), plus a
+  matching `.env.example`.
+- **`tools/`** — two example CLI tools (`hello_world`, `check_service`) showing the intended usage
+  pattern for new tools.
+- **`app.py`** — a minimal application entry point wired to the generated config and logger.
+- Full dev tooling: `uv`, `ruff`, `pyrefly`/`ty`, `pytest` + coverage, `pre-commit` (incl.
+  `gitleaks`), a `Makefile`, Dockerfile (multi-stage), a VS Code Dev Container, and a GitHub
+  Actions CI workflow mirroring `make check`.
+- Repo scaffolding: `LICENSE` (MIT/Apache-2.0/Proprietary), `CONTRIBUTING.md`,
+  `CODE_OF_CONDUCT.md`, `SECURITY.md`, PR template.
+
+No GenAI/LLM packages (langchain, openai, etc.) are included — this is a general-purpose backend
+Python scaffold.
+
+## Usage
+
+```bash
+uv tool install cookiecutter   # or: pipx install cookiecutter
+cookiecutter /path/to/ai-circus-template
+```
+
+You'll be prompted for `project_name`, `author_name`, `author_email`, `license`, `python_version`,
+etc. After generation, the post-generation hook will:
+
+1. Run the settings generator (via `uv run`) to produce `data_model.py` and `.env.example` from
+   `settings.yaml`.
+2. Initialize a local git repository with an initial commit.
+
+Then, inside the generated project:
+
+```bash
+make setup
+make check
+make run
+```
+
+## Customizing
+
+- Add new env vars in `settings.yaml`, then run `make generate-data-model`.
+- Add new CLI tools under `src/<package_name>/tools/`, and register them as `[project.scripts]`
+  in `pyproject.toml`.
+- Replace the `check_service` example with your own external API integration.
+
+## Template variables
+
+See [cookiecutter.json](cookiecutter.json) for the full list of prompts (project name/slug/package
+name, description, author, license, Python version, etc.).

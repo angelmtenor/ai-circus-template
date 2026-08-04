@@ -1,0 +1,15 @@
+{
+  "project_name": "My Backend App",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-').replace('_', '-') }}",
+  "package_name": "{{ cookiecutter.project_slug.replace('-', '_') }}",
+  "project_description": "A backend Python application scaffolded from ai-circus-template.",
+  "author_name": "Your Name",
+  "author_email": "you@example.com",
+  "github_username_or_org": "your-org",
+  "version": "0.1.0",
+  "python_version": "3.14",
+  "license": ["MIT", "Apache-2.0", "Proprietary"],
+  "year": "2026",
+  "_extensions": [],
+  "_copy_without_render": []
+}

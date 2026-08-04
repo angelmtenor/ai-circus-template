@@ -1,0 +1,50 @@
+# settings.yaml
+# Configuration file for environment variables required by the application
+# Author: {{cookiecutter.author_name}}
+# Defines variable names, descriptions, types, constraints, and validation rules.
+# Run 'make generate-data-model' after any change to sync data_model.py and .env.example.
+
+env_variables:
+  - name: LOG_LEVEL
+    description: "Application log level (TRACE, DEBUG, INFO, WARNING, ERROR, CRITICAL)"
+    type: string
+    mandatory: true
+    secret: false
+
+  - name: EXAMPLE_SERVICE_BASE_URL
+    description: "Base URL of an example external service used by the check-service tool"
+    type: string
+    mandatory: true
+    secret: false
+
+  - name: EXAMPLE_SERVICE_API_KEY
+    description: "API key for the example external service (replace with your own integration)"
+    type: string
+    mandatory: false
+    secret: true
+    validation:
+      regex: ^[A-Za-z0-9_-]{16,}$
+      error_message: "Invalid API key format. Expected at least 16 alphanumeric/-/_ characters."
+
+# Optional global settings
+global_settings:
+  env_file: ".env"          # Default location for environment variable file
+  fail_on_missing: true     # Stop execution if mandatory variables are missing
+  case_sensitive: true      # Enforce case sensitivity for variable names
+
+# Per-environment non-secret overrides.
+# Secrets MUST never appear here — use .env (local) or CI/CD secret injection (cloud).
+# APP_ENVIRONMENT selects the active profile (default: local).
+environments:
+  base:
+    LOG_LEVEL: "INFO"
+    EXAMPLE_SERVICE_BASE_URL: "https://httpbin.org"
+
+  local: {}
+    # Local development overrides
+
+  staging: {}
+    # Staging environment profile — overrides go here
+
+  production: {}
+    # Production environment profile — overrides go here
