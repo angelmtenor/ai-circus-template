@@ -26,6 +26,21 @@ packages and tooling removed.
   them, plus `.copilotignore`/`.geminiignore` to keep secrets out of agent context.
 
 
+## Prerequisites
+
+This template (and the projects it generates) targets Linux — native, WSL, a remote VM, or a
+VS Code Dev Container:
+
+- If you don't already have it, install [VS Code](https://code.visualstudio.com/download) on your
+  **host machine** first. For **WSL**, add the
+  [Remote - WSL extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)
+  ("WSL: Connect to WSL"); for a **remote VM**, add the
+  [Remote - SSH extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh)
+  ("Remote-SSH: Connect to Host...").
+- **Windows:** use **WSL** ([install guide](https://learn.microsoft.com/en-us/windows/wsl/install)).
+- Install [Docker](https://docs.docker.com/engine/install/ubuntu/) — needed for the generated
+  project's Dockerfile/Dev Container.
+
 ## Usage
 
 ```bash

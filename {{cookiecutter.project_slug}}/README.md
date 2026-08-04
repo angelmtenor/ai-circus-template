@@ -14,13 +14,21 @@
 
 This project targets Linux (native, WSL, remote VM, or a VS Code Dev Container):
 
+- If you don't already have it, install [VS Code](https://code.visualstudio.com/download) on your
+  **host machine** first. For **WSL**, add the
+  [Remote - WSL extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)
+  ("WSL: Connect to WSL"); for a **remote VM**, add the
+  [Remote - SSH extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh)
+  ("Remote-SSH: Connect to Host...").
 - **macOS / native Linux:** already Unix-based — skip ahead to Quick Start.
 - **Windows:** use **WSL** ([install guide](https://learn.microsoft.com/en-us/windows/wsl/install)).
 - **Remote VM** (AWS/Azure/GCP/on-prem): provision a Linux base and connect over SSH.
 - **VS Code Dev Container:** open this folder in VS Code and let it build `.devcontainer/Dockerfile`.
 
 You'll need [uv](https://docs.astral.sh/uv/getting-started/installation/) installed to manage the virtual
-environment and dependencies (the Dev Container installs it automatically).
+environment and dependencies, and [Docker](https://docs.docker.com/engine/install/ubuntu/) if you
+plan to use `make build-container`/`make run-container` (the Dev Container installs both
+automatically).
 
 ---
 
