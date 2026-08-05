@@ -30,7 +30,9 @@ jobs:
       - name: Install dependencies
         run: uv sync --locked
 
-      - name: Generate data model (fresh checkout has no data_model.py)
+      # data_model.py is committed, but regenerating it here is idempotent and
+      # surfaces settings.yaml drift as its own failing step, before `make qa`.
+      - name: Generate data model
         run: make generate-data-model
 
       - name: QA (pre-commit + config drift check)
