@@ -15,9 +15,15 @@ packages and tooling removed.
 - **`tools/`** — two example CLI tools (`hello_world`, `check_service`) showing the intended usage
   pattern for new tools.
 - **`app.py`** — a minimal application entry point wired to the generated config and logger.
-- Full dev tooling: `uv`, `ruff`, `pyrefly`/`ty`, `pytest` + coverage, `pre-commit` (incl.
-  `gitleaks`), a `Makefile`, Dockerfile (multi-stage), a VS Code Dev Container, and a GitHub
-  Actions CI workflow mirroring `make check`.
+- Full dev tooling: `uv`, `ruff`, `pyrefly`, `pytest` + coverage floor, `pre-commit` (incl.
+  `gitleaks`), a `Makefile`, Dockerfile (multi-stage, pinned uv, non-root), and a VS Code Dev
+  Container.
+- **Security gates out of the box**: `make qa` fails on any known CVE (`uv audit`); GitHub Actions
+  CI (least-privilege, SHA-pinned actions) mirrors `make check` and adds a full-history gitleaks
+  scan, a container image Trivy scan + SBOM, and commitlint; Dependabot opens weekly grouped
+  `uv` and `github-actions` update PRs; `CODEOWNERS` requests review from the maintainer.
+- git-flow ready: the generated repo starts with `main` + `develop` branches, documented in
+  `AGENTS.md`.
 - Repo scaffolding: `LICENSE` (MIT/Apache-2.0/Proprietary), `CONTRIBUTING.md`,
   `CODE_OF_CONDUCT.md`, `SECURITY.md`, PR template.
 - **Agent-agnostic AI instructions**: `AGENTS.md` (security rules, human-in-the-loop protocol,
@@ -53,7 +59,8 @@ etc. After generation, the post-generation hook will:
 
 1. Run the settings generator (via `uv run`) to produce `data_model.py` and `.env.example` from
    `settings.yaml`.
-2. Initialize a local git repository with an initial commit.
+2. Initialize a local git repository (`main` + `develop`, checked out on `develop`) with an
+   initial commit.
 
 Then, inside the generated project:
 
@@ -69,6 +76,8 @@ confirm the whole project still works after changes.
 ## Customizing
 
 - Add new env vars in `settings.yaml`, then run `make generate-data-model`.
+- Set `CODEOWNERS`' handle to a real GitHub user/team if `github_username_or_org` was left as a
+  placeholder (GitHub ignores handles that don't resolve).
 - Add new CLI tools under `src/<package_name>/tools/`, and register them as `[project.scripts]`
   in `pyproject.toml`.
 - Replace the `check_service` example with your own external API integration.
