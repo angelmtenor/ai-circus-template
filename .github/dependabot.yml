@@ -1,0 +1,14 @@
+# Keeps this repo's own workflow action pins current (the template has no lockfile of
+# its own — generated projects get their own .github/dependabot.yml).
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "setup"
+      include: "scope"
+    groups:
+      actions:
+        patterns: ["*"]

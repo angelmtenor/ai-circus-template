@@ -1,0 +1,62 @@
+# Template CI: bake a project from this cookiecutter and run the generated project's
+# own quality gate (`make check`: pre-commit, drift check, `uv audit`, tests with the
+# coverage floor) plus a container build + Trivy scan — so a template change can never
+# ship a project that fails its first `make check`. Actions are pinned to commit SHAs
+# (Dependabot keeps them current — see .github/dependabot.yml).
+name: Template CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  # Weekly: a freshly baked project resolves the newest dependency versions, so a new
+  # CVE (uv audit) or base-image issue (Trivy) surfaces here even without template changes.
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  bake-and-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@38f3f104447c67c051c4a08e39b64a148898af3a # v4
+
+      # The post-gen hook commits the scaffold, which needs a git identity.
+      - name: Configure git identity
+        run: |
+          git config --global user.name "template-ci"
+          git config --global user.email "template-ci@users.noreply.github.com"
+
+      - name: Bake a project
+        run: uvx cookiecutter . --no-input -o "$RUNNER_TEMP" project_name="baked-app"
+
+      - name: make check (generated project)
+        working-directory: ${{ runner.temp }}/baked-app
+        run: |
+          make install
+          make check
+          test -z "$(git status --porcelain)" || { echo "make check modified the fresh project:"; git status --porcelain; exit 1; }
+
+      - name: make run (smoke test)
+        working-directory: ${{ runner.temp }}/baked-app
+        run: make run
+
+      - name: Build image
+        working-directory: ${{ runner.temp }}/baked-app
+        run: docker build -t baked-app:ci .
+
+      - name: Trivy scan (fail on HIGH/CRITICAL)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: "baked-app:ci"
+          scan-type: "image"
+          format: "table"
+          severity: "HIGH,CRITICAL"
+          exit-code: "1"
+          ignore-unfixed: true
