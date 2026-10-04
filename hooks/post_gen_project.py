@@ -2,7 +2,7 @@
 
 Runs after cookiecutter renders the project files:
 1. Generates data_model.py + .env.example from settings.yaml (via `uv run`).
-2. Initializes a local git repository with an initial commit.
+2. Initializes a local git repository (git-flow `main`/`develop`) with an initial commit.
 
 Both steps are best-effort: if `uv` or `git` are unavailable, this hook prints
 guidance instead of failing the whole generation.
@@ -51,7 +51,11 @@ def generate_data_model() -> None:
         f"module.generate_data_model('settings.yaml', 'src/{PACKAGE_NAME}/data_model.py', '.env.example')\n"
     )
     try:
-        ok = _run(["uv", "run", "--", "python", script.name])
+        # Format like `make generate-data-model` does, so the first `make qa` on a
+        # fresh project doesn't rewrite the generated file.
+        ok = _run(["uv", "run", "--", "python", script.name]) and _run(
+            ["uv", "run", "--", "ruff", "format", "--quiet", f"src/{PACKAGE_NAME}/data_model.py"]
+        )
     finally:
         script.unlink(missing_ok=True)
 
@@ -65,9 +69,11 @@ def init_git() -> None:
     """Initialize a local git repository with an initial commit, if git is available."""
     if not shutil.which("git") or (PROJECT_DIR / ".git").exists():
         return
-    if _run(["git", "init", "-q"]) and _run(["git", "add", "-A"]):
-        _run(["git", "commit", "-q", "-m", "chore: initial scaffold from ai-circus-template"])
-        print("✓ Initialized local git repository with an initial commit")  # noqa: T201
+    if _run(["git", "init", "-q", "-b", "main"]) and _run(["git", "add", "-A"]):
+        committed = _run(["git", "commit", "-q", "-m", "setup: Initial scaffold from ai-circus-template"])
+        # git-flow (see the generated AGENTS.md): day-to-day work branches off develop.
+        if committed and _run(["git", "checkout", "-q", "-b", "develop"]):
+            print("✓ Initialized local git repository (main + develop) with an initial commit")  # noqa: T201
 
 
 if __name__ == "__main__":
