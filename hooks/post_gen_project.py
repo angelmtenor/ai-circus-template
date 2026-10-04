@@ -51,7 +51,11 @@ def generate_data_model() -> None:
         f"module.generate_data_model('settings.yaml', 'src/{PACKAGE_NAME}/data_model.py', '.env.example')\n"
     )
     try:
-        ok = _run(["uv", "run", "--", "python", script.name])
+        # Format like `make generate-data-model` does, so the first `make qa` on a
+        # fresh project doesn't rewrite the generated file.
+        ok = _run(["uv", "run", "--", "python", script.name]) and _run(
+            ["uv", "run", "--", "ruff", "format", "--quiet", f"src/{PACKAGE_NAME}/data_model.py"]
+        )
     finally:
         script.unlink(missing_ok=True)
 
